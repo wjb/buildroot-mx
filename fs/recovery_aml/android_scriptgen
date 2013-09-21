@@ -162,8 +162,10 @@ def main():
                       help=" wipe userdata partition during install if previous linux install")
   parser.add_option("-b", "--boardname", dest="boardname",
                       help=" check ro.product.board against boardname")
-  parser.add_option("-l", "--logo_partition", dest="logo_partition",
-                      help=" set on which partition logo will be installed")
+  parser.add_option("-l", "--logo_partition", dest="logo_partition", action="store_true",
+                      help=" apply logo to logo partition")
+  parser.add_option("-r", "--recovery", dest="recovery", action="store_true",
+                      help=" install recovery.img file on recovery partition")
   (options, args) = parser.parse_args()
 
   script = edify_generator.EdifyGenerator(3, OPTIONS.info_dict)
@@ -237,10 +239,14 @@ def main():
         f.write('assert(package_extract_file("aml_logo.img", "/tmp/aml_logo.img"),\n')
         f.write('       write_raw_image("/tmp/aml_logo.img", "aml_logo"),\n')
         f.write('       delete("/tmp/aml_logo.img"));\n')
-        if options.logo_partition == "yes":
+        if options.logo_partition:
           f.write('assert(package_extract_file("logo.img", "/tmp/logo.img"),\n')
           f.write('       write_raw_image("/tmp/logo.img", "logo"),\n')
           f.write('       delete("/tmp/logo.img"));\n')
+        if options.recovery:
+          f.write('assert(package_extract_file("recovery.img", "/tmp/recovery.img"),\n')
+          f.write('       write_raw_image("/tmp/recovery.img", "recovery"),\n')
+          f.write('       delete("/tmp/recovery.img"));\n')	  
         f.write('show_progress(0.018000, 0);\n')
         f.write('unmount("/system");\n')
         f.write('set_bootloader_env("upgrade_step", "1");\n')
