@@ -79,6 +79,37 @@ ROOTFS_RECOVERY_AML_CMD += \
 ADDITIONAL_FILES += " logo.img"
 endif
 
+###### Advanced options ######
+
+# Memory type
+ifeq ($(BR2_TARGET_ROOTFS_RECOVERY_AML_ADV_EMMC),y)
+RECOVERY_AML_ARGS += -m EMMC
+else
+RECOVERY_AML_ARGS += -m MTD
+endif
+
+# File system for system and data partitions
+ifeq ($(BR2_TARGET_ROOTFS_RECOVERY_AML_ADV_FS_EXT4),y)
+RECOVERY_AML_ARGS += -f ext4
+else
+RECOVERY_AML_ARGS += -f yaffs2
+endif
+
+# Path to system partition in recovery
+RECOVERY_AML_ARGS += -s $(BR2_TARGET_ROOTFS_RECOVERY_AML_ADV_PATH_SYSTEM)
+
+# Path to data partition in recovery
+RECOVERY_AML_ARGS += -d $(BR2_TARGET_ROOTFS_RECOVERY_AML_ADV_PATH_DATA)
+
+# Check if NFTL partition exists, if it does provide path (without leading partition no)
+ifeq ($(BR2_TARGET_ROOTFS_RECOVERY_AML_ADV_NFTL),y)
+RECOVERY_AML_ARGS += -n $(BR2_TARGET_ROOTFS_RECOVERY_AML_ADV_NFTL_PATH)
+else
+RECOVERY_AML_ARGS += -n none
+endif
+
+###### Advanced options ######
+
 # If we have provided recovery.img, make sure it's included in update.zip
 ifneq ($(strip $(BR2_TARGET_ROOTFS_RECOVERY_RECOVERY_IMG)),"")
 
