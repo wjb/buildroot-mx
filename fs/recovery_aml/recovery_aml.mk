@@ -42,10 +42,10 @@ RECOVERY_AML_ARGS += -l
 endif
 
 # Define default file name for package
-UPDATE_ZIP = $(BR2_TARGET_ROOTFS_RECOVERY_AML_BOARDNAME)-$(shell date -u +%0d%^b%Y-%H%M%S)-update.zip
+# UPDATE_ZIP = $(BR2_TARGET_ROOTFS_RECOVERY_AML_BOARDNAME)-$(shell date -u +%0d%^b%Y-%H%M%S)-update.zip
 
 ifeq ($(BR2_TARGET_ROOTFS_RECOVERY_AML_UPDATE_ZIP_NAME_FULL_DATETIME),y)
-    UPDATE_ZIP = $(BR2_TARGET_ROOTFS_RECOVERY_AML_BOARDNAME)-$(shell date -u %0d%^b%Y-%H%M%S)-update.zip
+    UPDATE_ZIP = $(BR2_TARGET_ROOTFS_RECOVERY_AML_BOARDNAME)-$(shell date -u +%0d%^b%Y-%H%M%S)-update.zip
 endif
 ifeq ($(BR2_TARGET_ROOTFS_RECOVERY_AML_UPDATE_ZIP_NAME_SHORT_DATE),y)
     UPDATE_ZIP = $(BR2_TARGET_ROOTFS_RECOVERY_AML_BOARDNAME)-$(shell date -u +%Y%m%d)-update.zip
