@@ -1,11 +1,11 @@
 <keymap>
   <global>
     <keyboard>
-      <f4>XBMC.ActivateWindow(Settings)</f4>
-      <f5>XBMC.RunScript(script.globalsearch)</f5>
-      <f1>XBMC.ActivateWindow(MyPictures)</f1>
-      <f2>XBMC.ActivateWindow(MyMusic)</f2>
-      <f3>XBMC.ActivateWindow(VideoLibrary)</f3>
+      <f3>XBMC.ActivateWindow(Settings)</f3>
+      <f4>XBMC.RunScript(script.globalsearch)</f4>
+      <numpadtimes>XBMC.ActivateWindow(MyPictures)</numpadtimes>
+      <f6>XBMC.ActivateWindow(MyMusic)</f6>
+      <f1>XBMC.ActivateWindow(VideoLibrary)</f1>
       <a>SubtitleDelay</a>
     </keyboard>
   </global>
