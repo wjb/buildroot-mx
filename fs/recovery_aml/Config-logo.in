@@ -31,4 +31,11 @@ config BR2_TARGET_ROOTFS_RECOVERY_RECOVERY_IMG
        help
 	  Flash selected recovery image
 
+config BR2_TARGET_ROOTFS_RECOVERY_BOOTLOADER_IMG
+       string "Flash bootloader image using file specified"
+       depends on BR2_TARGET_ROOTFS_RECOVERY_AML
+       default ""
+       help
+	  Flash selected bootloader image
+
 endmenu

@@ -41,6 +41,14 @@ RECOVERY_AML_ARGS += -l
 
 endif
 
+ifneq ($(strip $(BR2_TARGET_ROOTFS_RECOVERY_BOOTLOADER_IMG)),"")
+
+# Check if bootloader.img exists
+  $(if $(wildcard $(BR2_TARGET_ROOTFS_RECOVERY_BOOTLOADER_IMG)),,$(fatal bootloader.img does not exist (Path: $(BR2_TARGET_ROOTFS_RECOVERY_BOOTLOADER_IMG)).))
+
+  RECOVERY_AML_ARGS += -u
+endif
+
 # Check for UPDATE_ZIP_PREFIX to override file name
 # Default is to use boardname
 ifneq ($(strip $(BR2_TARGET_ROOTFS_RECOVERY_AML_UPDATE_ZIP_PREFIX)),"")
@@ -129,6 +137,16 @@ ROOTFS_RECOVERY_AML_CMD += \
     cp -f $(BR2_TARGET_ROOTFS_RECOVERY_RECOVERY_IMG) $(BINARIES_DIR)/aml_recovery/recovery.img && 
 
 ADDITIONAL_FILES += " recovery.img"
+endif
+
+# If we have provided bootloader.img, make sure it's included in update.zip
+ifneq ($(strip $(BR2_TARGET_ROOTFS_RECOVERY_BOOTLOADER_IMG)),"")
+
+ROOTFS_RECOVERY_AML_CMD += \
+    echo "Copy bootloader.img..." && \
+    cp -f $(BR2_TARGET_ROOTFS_RECOVERY_BOOTLOADER_IMG) $(BINARIES_DIR)/aml_recovery/bootloader.img && 
+
+ADDITIONAL_FILES += " bootloader.img"
 endif
 
 ROOTFS_RECOVERY_AML_CMD += \
