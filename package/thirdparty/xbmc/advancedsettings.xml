@@ -8,7 +8,6 @@
   </pvr>
 
   <hidesettings>
-    <setting>lookandfeel.soundskin</setting>
     <setting>videoplayer.rendermethod</setting>
     <setting>videoplayer.adjustrefreshrate</setting>
     <setting>videoplayer.pauseafterrefreshchange</setting>
@@ -26,7 +25,6 @@
     <setting>audiooutput.truehdpassthrough</setting>
     <setting>audiooutput.dtshdpassthrough</setting>
     <setting>input.remoteaskeyboard</setting>
-    <setting>audiooutput.guisoundmode</setting>
   </hidesettings>
 
   <video>
@@ -36,7 +34,6 @@
 
   <network>
     <alwaysforcebuffer>true</alwaysforcebuffer>
-    <cachemembuffersize>104857600</cachemembuffersize>
     <readbufferfactor>4.0</readbufferfactor>
   </network>
 
