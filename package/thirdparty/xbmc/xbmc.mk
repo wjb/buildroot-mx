@@ -14,7 +14,7 @@ XBMC_DEPENDENCIES = host-lzo host-sdl_image
 
 XBMC_CONF_OPT+= --enable-neon --enable-gles --disable-sdl --disable-x11 --disable-xrandr \
   --disable-projectm --enable-debug --disable-joystick --with-cpu=cortex-a9 \
-  --enable-codec=amcodec --enable-player=amlplayer 
+  --enable-codec=amcodec --enable-m6
 ifneq ($(BR2_CCACHE),y)
 XBMC_CONF_OPT+= --disable-ccache
 endif
