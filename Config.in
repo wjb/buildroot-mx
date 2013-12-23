@@ -2,7 +2,6 @@
 
 mainmenu "Buildroot $BR2_VERSION Configuration"
 
-
 config BR2_HAVE_DOT_CONFIG
 	bool
 	default y
@@ -22,7 +21,6 @@ config BR2_HOSTARCH_NEEDS_IA32_LIBS
 	bool
 
 source "arch/Config.in"
-
 
 menu "Build options"
 
@@ -472,7 +470,6 @@ config BR2_GLOBAL_PATCH_DIR
 	  then all *.patch files in the directory will be applied.
 
 endmenu
-
 
 source "toolchain/Config.in"
 
