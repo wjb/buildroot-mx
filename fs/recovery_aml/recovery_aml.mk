@@ -149,6 +149,22 @@ ROOTFS_RECOVERY_AML_CMD += \
 ADDITIONAL_FILES += " bootloader.img"
 endif
 
+ifneq ($(strip $(BR2_TARGET_ROOTFS_RECOVERY_AML_APPEND_INITRD)),"")
+
+ROOTFS_RECOVERY_AML_CMD += \
+    echo "Appending initramfs to kernel..." && \
+    cd $(RECOVERY_AML_BUILDROOT_ROOT)/$(BR2_TARGET_ROOTFS_RECOVERY_AML_APPEND_INITRD)/ && \
+    find . | cpio -o --format=newc | gzip > $(BINARIES_DIR)/aml_recovery/ramdisk-new.gz && \
+    cd $(RECOVERY_AML_BUILDROOT_ROOT) && \
+    fs/recovery_aml/mkbootimg --kernel $(BINARIES_DIR)/uImage --ramdisk $(BINARIES_DIR)/aml_recovery/ramdisk-new.gz -o $(BINARIES_DIR)/aml_recovery/uImage && \
+    cp -f $(BINARIES_DIR)/aml_recovery/uImage $(BINARIES_DIR)/kernel &&  
+else
+
+ROOTFS_RECOVERY_AML_CMD += \
+    cp -f $(BINARIES_DIR)/uImage $(BINARIES_DIR)/aml_recovery/ &&
+
+endif
+
 ROOTFS_RECOVERY_AML_CMD += \
     tar -C $(BINARIES_DIR)/aml_recovery/system -xf $(BINARIES_DIR)/rootfs.tar && \
     mkdir -p $(BINARIES_DIR)/aml_recovery/META-INF/com/google/android/ && \
@@ -156,7 +172,6 @@ ROOTFS_RECOVERY_AML_CMD += \
      $(BINARIES_DIR)/aml_recovery/META-INF/com/google/android/updater-script && \
     cp -f fs/recovery_aml/update-binary $(BINARIES_DIR)/aml_recovery/META-INF/com/google/android/ && \
     cp -f $(AML_LOGO) $(BINARIES_DIR)/aml_recovery/aml_logo.img && \
-    cp -f $(BINARIES_DIR)/uImage $(BINARIES_DIR)/aml_recovery/ && \
     find $(BINARIES_DIR)/aml_recovery/system/ -type l -delete && \
     find $(BINARIES_DIR)/aml_recovery/system/ -type d -empty -exec sh -c 'echo "dummy" > "{}"/.empty' \; && \
     pushd $(BINARIES_DIR)/aml_recovery/ >/dev/null && \
