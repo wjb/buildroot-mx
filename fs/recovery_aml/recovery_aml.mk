@@ -153,9 +153,9 @@ ifneq ($(strip $(BR2_TARGET_ROOTFS_RECOVERY_AML_APPEND_INITRD)),"")
 
 ROOTFS_RECOVERY_AML_CMD += \
     echo "Appending initramfs to kernel..." && \
-    cd $(RECOVERY_AML_BUILDROOT_ROOT)/$(BR2_TARGET_ROOTFS_RECOVERY_AML_APPEND_INITRD)/ && \
+    pushd $(BR2_TARGET_ROOTFS_RECOVERY_AML_APPEND_INITRD)/ >/dev/null && \
     find . | cpio -o --format=newc | gzip > $(BINARIES_DIR)/aml_recovery/ramdisk-new.gz && \
-    cd $(RECOVERY_AML_BUILDROOT_ROOT) && \
+    popd >/dev/null && \
     fs/recovery_aml/mkbootimg --kernel $(BINARIES_DIR)/uImage --ramdisk $(BINARIES_DIR)/aml_recovery/ramdisk-new.gz -o $(BINARIES_DIR)/aml_recovery/uImage && \
     cp -f $(BINARIES_DIR)/aml_recovery/uImage $(BINARIES_DIR)/kernel &&  
 else
