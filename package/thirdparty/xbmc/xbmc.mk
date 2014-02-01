@@ -21,7 +21,7 @@ endif
 
 XBMC_DEPENDENCIES += libogg flac libmad libmpeg2 libogg \
   libsamplerate libtheora libvorbis wavpack bzip2 dbus libcdio \
-  python lzo zlib libgcrypt openssl mysql_client sqlite fontconfig \
+  python lzo zlib libgcrypt openssl mysql sqlite fontconfig \
   freetype jasper jpeg libmodplug libpng libungif tiff libcurl \
   libmicrohttpd libssh2 boost fribidi ncurses pcre libnfs afpfs-ng \
   libplist libshairport libbluray libcec \
