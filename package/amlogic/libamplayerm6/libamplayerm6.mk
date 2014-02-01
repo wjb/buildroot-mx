@@ -12,7 +12,7 @@ LIBAMPLAYERM6_INSTALL_TARGET=YES
 
 ifeq ($(BR2_PACKAGE_LIBAMPLAYERM6),y)
 # actually required for amavutils and amffmpeg
-LIBAMPLAYERM6_DEPENDENCIES += alsa-lib librtmp pkg-config
+LIBAMPLAYERM6_DEPENDENCIES += alsa-lib librtmp pkgconf
 AMFFMPEG_DIR = $(BUILD_DIR)/libamplayerm6-$(LIBAMPLAYERM6_VERSION)/amffmpeg
 AMAVUTILS_DIR = $(BUILD_DIR)/libamplayerm6-$(LIBAMPLAYERM6_VERSION)/amavutils
 AMFFMPEG_EXTRA_LDFLAGS += --extra-ldflags="-lamavutils"
