@@ -1,0 +1,16 @@
+config BR2_PACKAGE_PYGOBJECT
+	bool "pygobject"
+	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_PACKAGE_LIBGLIB2
+	depends on BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_LIBFFI
+	help
+          PyGObject provides a convenient wrapper for the GObject+ library for use in Python programs,
+          and takes care of many of the boring details such as managing memory and type casting.
+          When combined with PyGTK, PyORBit and gnome-python, it can be used to write full featured
+          Gnome applications.
+
+          http://www.pygtk.org/
+
+comment "pygobject requires a toolchain with WCHAR support"
+	depends on BR2_PACKAGE_LIBGLIB2 && BR2_PACKAGE_PYTHON && !BR2_USE_WCHAR

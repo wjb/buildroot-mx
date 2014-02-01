@@ -1,0 +1,23 @@
+--- pygobject-2.28.6/configure.orig	2011-09-12 13:52:57.000000000 +0400
++++ pygobject-2.28.6/configure	2011-09-12 13:52:59.000000000 +0400
+@@ -14933,6 +14933,12 @@
+ 
+ { $as_echo "$as_me:${as_lineno-$LINENO}: checking for headers required to compile python extensions" >&5
+ $as_echo_n "checking for headers required to compile python extensions... " >&6; }
++if test "${am_cv_python_includes+set}" = set; then
++echo $ECHO_N "(cached) $ECHO_C" >&6
++PYTHON_INCLUDES=${am_cv_python_includes}
++{ echo "$as_me:$LINENO: result: $PYTHON_INCLUDES" >&5
++echo "${ECHO_T}$PYTHON_INCLUDES" >&6; }
++else
+ py_prefix=`$PYTHON -c "import sys; sys.stdout.write(sys.prefix)"`
+ py_exec_prefix=`$PYTHON -c "import sys; sys.stdout.write(sys.exec_prefix)"`
+ PYTHON_CONFIG=`which $PYTHON`-config
+@@ -14944,6 +14950,7 @@
+   PYTHON_INCLUDES="$PYTHON_INCLUDES -I${py_exec_prefix}/include/python${PYTHON_VERSION}"
+ fi
+ fi
++fi
+ 
+ save_CPPFLAGS="$CPPFLAGS"
+ CPPFLAGS="$CPPFLAGS $PYTHON_INCLUDES"
