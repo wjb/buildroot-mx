@@ -1,7 +1,0 @@
-config BR2_PACKAGE_DRIVER_GPU_MALI
-    bool "Mali GPU Driver"
-    help
-	Mali Userspace GPU Driver
-
-	https://github.com/linux-sunxi/sunxi-mali/
-
