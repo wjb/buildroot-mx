@@ -40,10 +40,11 @@ define LIBAMPLAYERM6_INSTALL_STAGING_CMDS
 	mkdir -p $(STAGING_DIR)/usr/lib
 	install -m 755 $(@D)/usr/lib/*.so* $(STAGING_DIR)/usr/lib
     if [ -e $(STAGING_DIR)/usr/lib/libamcodec.so ]; then rm $(STAGING_DIR)/usr/lib/libamcodec.so; fi;
-    cd $(STAGING_DIR)/usr/lib; ln -s libamcodec.so.0.0 libamcodec.so
+    cd $(STAGING_DIR)/usr/lib; ln -sf libamcodec.so.0.0 libamcodec.so
 
 #temporary, until we sync with mainline xbmc
 	cp -rf $(@D)/usr/include/amlplayer/* $(STAGING_DIR)/usr/include
+	cd $(STAGING_DIR)/usr/include; ln -sf amlplayer amcodec
 endef
 
 define LIBAMPLAYERM6_INSTALL_TARGET_CMDS
@@ -55,7 +56,7 @@ define LIBAMPLAYERM6_INSTALL_TARGET_CMDS
 	mkdir -p $(TARGET_DIR)/usr/lib
 	install -m 755 $(@D)/usr/lib/*.so* $(TARGET_DIR)/usr/lib
     if [ -e $(TARGET_DIR)/usr/lib/libamcodec.so ]; then rm $(TARGET_DIR)/usr/lib/libamcodec.so; fi;
-	cd $(TARGET_DIR)/usr/lib; ln -s libamcodec.so.0.0 libamcodec.so
+	cd $(TARGET_DIR)/usr/lib; ln -sf libamcodec.so.0.0 libamcodec.so
 endef
 
 $(eval $(call generic-package))
