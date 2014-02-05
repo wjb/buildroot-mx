@@ -3,7 +3,11 @@ menu "XBMC addons"
 
 comment "XBMC services"
 
-comment "XBMC scripts"
+config BR2_PACKAGE_XBMC_ADDON_SVCAMLSETTINGS
+	bool "service.amlinux.settings"
+	depends on BR2_PACKAGE_XBMC
+	default n
 
+comment "XBMC scripts"
 
 endmenu
