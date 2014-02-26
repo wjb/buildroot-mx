@@ -1,0 +1,11 @@
+[Unit]
+Description=Samba defaults
+After=local-fs.target
+
+ConditionPathExists=!/root/.cache/services/samba.conf
+ConditionPathExists=!/root/.cache/services/samba.disabled
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c 'cp /usr/share/services/samba.conf /root/.cache/services/'
+RemainAfterExit=yes

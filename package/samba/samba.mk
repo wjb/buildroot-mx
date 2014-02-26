@@ -173,4 +173,16 @@ endef
 
 SAMBA_POST_INSTALL_TARGET_HOOKS += SAMBA_INSTALL_INITSCRIPTS_CONFIG
 
+ifeq ($(BR2_INIT_SYSTEMD),y)
+define SAMBA_SYSTEMD_INSTALL
+	$(call install_systemd_files)
+	$(call enable_service, nmbd.service)
+	$(call enable_service, samba-config.service)
+	$(call enable_service, samba-defaults.service)
+	$(call enable_service, smbd.service)
+endef
+
+SAMBA_POST_INSTALL_TARGET_HOOKS += SAMBA_SYSTEMD_INSTALL
+endif
+
 $(eval $(autotools-package))
