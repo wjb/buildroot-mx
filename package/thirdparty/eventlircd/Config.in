@@ -1,0 +1,7 @@
+config BR2_PACKAGE_EVENTLIRCD
+        bool "eventlircd"
+        help
+          Linux Remote Control Driver/Daemon
+
+          http://code.google.com/p/eventlircd
+
