@@ -45,6 +45,18 @@ SYSTEMD_CONF_OPT += \
 	--disable-myhostname \
 	--disable-tcpwrap \
 	--disable-tests \
+	--enable-logind \
+	--enable-tmpfiles \
+	--disable-machined \
+	--disable-hostnamed \
+	--disable-timedated \
+	--disable-localed \
+	--disable-backlight \
+	--disable-binfmt \
+	--disable-vconsole \
+	--disable-readahead \
+	--disable-quotacheck \
+	--disable-randomseed \
 	--without-python
 
 ifeq ($(BR2_PACKAGE_ACL),y)
@@ -90,8 +102,6 @@ define SYSTEMD_INSTALL_INIT_HOOK
 	ln -fs ../bin/systemctl $(TARGET_DIR)/sbin/halt
 	ln -fs ../bin/systemctl $(TARGET_DIR)/sbin/poweroff
 	ln -fs ../bin/systemctl $(TARGET_DIR)/sbin/reboot
-
-	ln -fs ../../../lib/systemd/system/multi-user.target $(TARGET_DIR)/etc/systemd/system/default.target
 endef
 
 define SYSTEMD_INSTALL_TTY_HOOK
@@ -108,15 +118,61 @@ define SYSTEMD_SANITIZE_PATH_IN_UNITS
 		-exec $(SED) 's,$(HOST_DIR),,g' {} \;
 endef
 
+define SYSTEMD_CLEANUP_UNITS
+	rm -f $(TARGET_DIR)/lib/systemd/system-update-utmp
+	rm -f $(TARGET_DIR)/lib/systemd/system/systemd-update-utmp-runlevel.service
+	rm -f $(TARGET_DIR)/lib/systemd/system/systemd-update-utmp.service
+	rm -f $(TARGET_DIR)/lib/systemd/system/sysinit.target.wants/systemd-update-utmp.service
+
+	rm -f $(TARGET_DIR)/lib/systemd/system/systemd-ask-password-wall.service
+	rm -f $(TARGET_DIR)/lib/systemd/system/systemd-ask-password-wall.path
+	rm -f $(TARGET_DIR)/lib/systemd/system/systemd-ask-password-console.service
+	rm -f $(TARGET_DIR)/lib/systemd/system/systemd-ask-password-console.path
+	rm -f $(TARGET_DIR)/bin/systemd-ask-password
+	rm -f $(TARGET_DIR)/bin/systemd-tty-ask-password-agent
+	rm -f $(TARGET_DIR)/lib/systemd/system/sysinit.target.wants/systemd-ask-password-console.path
+	rm -f $(TARGET_DIR)/lib/systemd/system/multi-user.target.wants/systemd-ask-password-wall.path
+
+	rm -f $(TARGET_DIR)/lib/systemd/system/systemd-fsck-root.service
+	rm -f $(TARGET_DIR)/lib/systemd/system/local-fs.target.wants/systemd-fsck-root.service
+
+	rm -f $(TARGET_DIR)/lib/systemd/system/systemd-binfmt.service
+	rm -f $(TARGET_DIR)/lib/systemd/system/sysinit.target.wants/systemd-binfmt.service
+	rm -f $(TARGET_DIR)/lib/systemd/system/proc-sys-fs-binfmt_misc.mount
+	rm -f $(TARGET_DIR)/lib/systemd/system/proc-sys-fs-binfmt_misc.automount
+	rm -f $(TARGET_DIR)/lib/systemd/system/sysinit.target.wants/proc-sys-fs-binfmt_misc.automount
+
+	rm -f $(TARGET_DIR)/lib/systemd/system/autovt@.service
+	rm -f $(TARGET_DIR)/lib/systemd/system/sysinit.target.wants/systemd-vconsole-setup.service
+
+	rm -f $(TARGET_DIR)/lib/systemd/system/getty.target
+	rm -f $(TARGET_DIR)/lib/systemd/system/getty@.service
+	rm -f $(TARGET_DIR)/lib/systemd/system/getty.target.wants
+	rm -f $(TARGET_DIR)/lib/systemd/system/console-getty.service
+
+	rm -f $(TARGET_DIR)/usr/lib/tmpfiles.d/legacy.conf
+
+	ln -sf /lib/systemd/system/console-debug.service $(TARGET_DIR)/lib/systemd/system/multi-user.target.wants/console-debug.service
+endef
+
 SYSTEMD_POST_INSTALL_TARGET_HOOKS += \
 	SYSTEMD_INSTALL_INIT_HOOK \
 	SYSTEMD_INSTALL_TTY_HOOK \
 	SYSTEMD_INSTALL_MACHINEID_HOOK \
-	SYSTEMD_SANITIZE_PATH_IN_UNITS
+	SYSTEMD_SANITIZE_PATH_IN_UNITS \
+	SYSTEMD_CLEANUP_UNITS
 
 define SYSTEMD_USERS
 	systemd-journal -1 systemd-journal -1 * /var/log/journal - - Journal
 	systemd-journal-gateway -1 systemd-journal-gateway -1 * /var/log/journal - - Journal Gateway
 endef
+
+ifeq ($(BR2_INIT_SYSTEMD),y)
+define SYSTEMD_SYSTEMD_INSTALL
+	$(call install_systemd_files)
+endef
+
+SYSTEMD_POST_INSTALL_TARGET_HOOKS += SYSTEMD_SYSTEMD_INSTALL
+endif
 
 $(eval $(autotools-package))
