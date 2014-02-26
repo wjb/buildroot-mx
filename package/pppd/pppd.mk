@@ -45,6 +45,12 @@ define PPPD_BUILD_CMDS
 		-C $(@D) $(PPPD_MAKE_OPT)
 endef
 
+ifeq ($(BR2_PACKAGE_CONNMAN),y)
+define PPPD_INSTALL_DEVEL
+	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR)/usr install-devel
+endef
+endif
+
 ifeq ($(BR2_PACKAGE_PPPD_RADIUS),y)
 define PPPD_INSTALL_RADIUS
 	$(INSTALL) -D $(PPPD_DIR)/pppd/plugins/radius/radattr.so \
@@ -90,6 +96,11 @@ define PPPD_INSTALL_TARGET_CMDS
 	$(INSTALL) -D $(PPPD_DIR)/pppd/plugins/pppol2tp/pppol2tp.so \
 		$(TARGET_DIR)/usr/lib/pppd/$(PPPD_VERSION)/pppol2tp.so
 	$(PPPD_INSTALL_RADIUS)
+	$(PPPD_INSTALL_DEVEL)
+	for m in $(PPPD_MANPAGES); do \
+		$(INSTALL) -m 644 -D $(PPPD_DIR)/$$m/$$m.8 \
+			$(TARGET_DIR)/usr/share/man/man8/$$m.8; \
+	done
 endef
 
 $(eval $(generic-package))
