@@ -45,10 +45,10 @@ endef
 
 define DROPBEAR_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/dropbear/dropbear.service \
-		$(TARGET_DIR)/etc/systemd/system/dropbear.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+		$(TARGET_DIR)/lib/systemd/system/dropbear.service
+	mkdir -p $(TARGET_DIR)/lib/systemd/system/multi-user.target.wants
 	ln -fs ../dropbear.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/dropbear.service
+		$(TARGET_DIR)/lib/systemd/system/multi-user.target.wants/dropbear.service
 endef
 
 ifeq ($(BR2_USE_MMU),y)
@@ -86,5 +86,15 @@ define DROPBEAR_INSTALL_TARGET_CMDS
 		ln -snf ../sbin/dropbear $(TARGET_DIR)/usr/bin/$$f ; \
 	done
 endef
+
+ifeq ($(BR2_INIT_SYSTEMD),y)
+define DROPBEAR_SYSTEMD_INSTALL
+	$(call install_systemd_files)
+	$(call enable_service, dropbear-keys.service)
+	$(call enable_service, dropbear.service)
+endef
+
+DROPBEAR_POST_INSTALL_TARGET_HOOKS += DROPBEAR_SYSTEMD_INSTALL
+endif
 
 $(eval $(autotools-package))
