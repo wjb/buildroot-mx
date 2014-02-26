@@ -213,6 +213,17 @@ define BUSYBOX_INSTALL_TARGET_CMDS
 	$(BUSYBOX_INSTALL_WATCHDOG_SCRIPT)
 endef
 
+ifeq ($(BR2_INIT_SYSTEMD),y)
+define BUSYBOX_SYSTEMD_INSTALL
+	$(call install_systemd_files)
+	$(call enable_service, console_debug.service)
+	$(call enable_service, cron_defaults.service)
+	$(call enable_service, cron.service)
+endef
+
+BUSYBOX_POST_INSTALL_TARGET_HOOKS += BUSYBOX_SYSTEMD_INSTALL
+endif
+
 $(eval $(generic-package))
 
 busybox-menuconfig busybox-xconfig busybox-gconfig: busybox-patch
