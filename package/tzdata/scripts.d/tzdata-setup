@@ -1,0 +1,24 @@
+#!/bin/sh
+
+if [ -z "$1" ] ; then
+  # called from systemd. read timezone if set
+  if [ -f /root/.cache/timezone ] ; then
+    TIMEZONE=`cat /root/.cache/timezone`
+  else
+    if [ -f /root/.xbmc/userdata/guisettings.xml ] ; then
+      TIMEZONE=`sed -n -e 's/.*<timezone>\(.*\)<\/timezone>.*/\1/p' /root/.xbmc/userdata/guisettings.xml`
+    fi
+    if [ -z "TIMEZONE" ] ; then
+      TIMEZONE="GMT"
+    fi
+    # save it!
+    echo "$TIMEZONE" > /root/.cache/timezone
+  fi
+else
+  # called from xbmc. save the timezone!
+  TIMEZONE="$1"
+  echo "$TIMEZONE" > /root/.cache/timezone
+fi
+
+rm /etc/localtime
+ln -sf "/usr/share/zoneinfo/$TIMEZONE" /etc/localtime

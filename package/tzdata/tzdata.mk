@@ -44,4 +44,13 @@ define TZDATA_INSTALL_TARGET_CMDS
 	done
 endef
 
+ifeq ($(BR2_INIT_SYSTEMD),y)
+define TZDATA_SYSTEMD_INSTALL
+	$(call install_systemd_files)
+	$(call enable_service, tz-data.service)
+endef
+
+TZDATA_POST_INSTALL_TARGET_HOOKS += TZDATA_SYSTEMD_INSTALL
+endif
+
 $(eval $(generic-package))
