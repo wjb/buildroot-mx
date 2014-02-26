@@ -363,3 +363,4 @@ include package/pkg-python.mk
 include package/pkg-generic.mk
 include package/pkg-xbmc-addon.mk
 include package/pkg-xbmc-skin.mk
+include package/pkg-systemd.mk
