@@ -62,4 +62,13 @@ endef
 
 NTP_POST_PATCH_HOOKS += NTP_PATCH_FIXUPS
 
+ifeq ($(BR2_INIT_SYSTEMD),y)
+define NTP_SYSTEMD_INSTALL
+	$(call install_systemd_files)
+	$(call enable_service, ntp-daemon.service)
+endef
+
+NTP_POST_INSTALL_TARGET_HOOKS += NTP_SYSTEMD_INSTALL
+endif
+
 $(eval $(autotools-package))

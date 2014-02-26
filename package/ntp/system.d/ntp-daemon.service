@@ -1,0 +1,11 @@
+[Unit]
+Description=Start ntp daemon
+
+[Service]
+Type=oneshot
+ExecStart=/lib/amlinux/ntp-daemon
+RemainAfterExit=yes
+StartLimitInterval=0
+
+[Install]
+WantedBy=xbmc.service
