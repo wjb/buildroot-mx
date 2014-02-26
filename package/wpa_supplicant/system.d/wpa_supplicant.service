@@ -1,0 +1,9 @@
+[Unit]
+Description=WPA supplicant
+
+[Service]
+Type=forking
+ExecStart=/usr/sbin/wpa_supplicant -u -B -iwlan0
+
+[Install]
+WantedBy=multi-user.target

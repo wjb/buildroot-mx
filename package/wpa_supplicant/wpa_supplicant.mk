@@ -183,4 +183,13 @@ define WPA_SUPPLICANT_INSTALL_TARGET_CMDS
 	$(WPA_SUPPLICANT_INSTALL_DBUS)
 endef
 
+ifeq ($(BR2_INIT_SYSTEMD),y)
+define WPA_SUPPLICANT_SYSTEMD_INSTALL
+	$(call install_systemd_files)
+	$(call enable_service, wpa_supplicant.service)
+endef
+
+WPA_SUPPLICANT_POST_INSTALL_TARGET_HOOKS += WPA_SUPPLICANT_SYSTEMD_INSTALL
+endif
+
 $(eval $(generic-package))
