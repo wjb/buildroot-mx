@@ -1,0 +1,21 @@
+[Unit]
+Description=Connection service
+Before=network.target
+Wants=network.target
+After=debugconfig.service
+
+[Service]
+Type=dbus
+BusName=net.connman
+Restart=on-failure
+EnvironmentFile=-/run/amlinux/debug/connman.conf
+ExecStartPre=/lib/amlinux/connman-setup
+ExecStart=/usr/sbin/connmand -nr $CONNMAN_DEBUG
+# send SIGKILL on stop to keep ip configuration
+KillSignal=SIGKILL
+StandardOutput=null
+RestartSec=2
+StartLimitInterval=0
+
+[Install]
+WantedBy=multi-user.target
