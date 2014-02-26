@@ -1,4 +1,3 @@
-<settings>
     <lookandfeel>
         <enablerssfeeds>false</enablerssfeeds>
     </lookandfeel>
@@ -18,4 +17,3 @@
         <enablemouse>false</enablemouse>
         <remoteaskeyboard>true</remoteaskeyboard>
     </input>
-</settings>
