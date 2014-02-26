@@ -1,0 +1,16 @@
+[Unit]
+Description=Factory reset
+DefaultDependencies=false
+After=local-fs.target
+Before=sysinit.target
+
+ConditionPathExists=|/root/.cache/reset_amlinux
+ConditionPathExists=|/root/.cache/reset_xbmc
+
+[Service]
+Type=oneshot
+ExecStart=/lib/amlinux/factory-reset
+StandardOutput=tty
+
+[Install]
+WantedBy=sysinit.target

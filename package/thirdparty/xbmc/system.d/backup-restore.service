@@ -1,0 +1,14 @@
+[Unit]
+Description=Restoring Backup
+DefaultDependencies=false
+After=local-fs.target
+Before=sysinit.target
+
+[Service]
+Type=oneshot
+ExecStart=/lib/amlinux/backup-restore
+StandardOutput=tty
+
+[Install]
+WantedBy=sysinit.target
+
