@@ -1,0 +1,17 @@
+[Unit]
+Description=Wait on network
+After=connman.service
+Before=xbmc.service
+
+ConditionPathExists=/root/.cache/amlinux/network_wait
+
+[Service]
+Type=oneshot
+EnvironmentFile=/root/.cache/amlinux/network_wait
+ExecStartPre=/bin/sh -c 'echo "waiting on Network to come online ... (max. $WAIT_NETWORK_TIME sec.)"
+ExecStart=/lib/amlinux/cm-online ${WAIT_NETWORK_TIME}
+StandardOutput=tty
+RemainAfterExit=yes
+
+[Install]
+WantedBy=xbmc.service

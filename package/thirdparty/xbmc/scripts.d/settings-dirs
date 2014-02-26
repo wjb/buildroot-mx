@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# Make sure amlinux settings directories exists
+if [ ! -d /root/.cache/connman ] ; then
+  mkdir -p /root/.cache/connman
+fi
+if [ ! -d /root/.config ] ; then
+  mkdir -p /root/.config
+fi
+# Start with GMT to avoid blank timezone file
+if [ ! -f /root/.cache/timezone ] ; then
+  echo "GMT" > /root/.cache/timezone
+fi
+# Create backup directory
+if [ ! -d /root/backup ] ; then
+  mkdir -p /root/backup
+fi

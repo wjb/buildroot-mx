@@ -1,0 +1,13 @@
+[Unit]
+Description=Display Start Splash Screen (Loading...)
+DefaultDependencies=false
+Before=local-fs-pre.target
+
+[Service]
+Type=oneshot
+ExecStart=/lib/amlinux/start-splash
+RemainAfterExit=yes
+StartLimitInterval=0
+
+[Install]
+WantedBy=local-fs-pre.target

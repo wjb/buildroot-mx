@@ -1,0 +1,13 @@
+[Unit]
+Description=Check/Create settings directories in /root
+DefaultDependencies=false
+After=userdata-mount.service
+Before=local-fs-pre.target
+
+[Service]
+Type=oneshot
+ExecStart=/lib/amlinux/settings-dirs
+RemainAfterExit=yes
+
+[Install]
+WantedBy=local-fs-pre.target

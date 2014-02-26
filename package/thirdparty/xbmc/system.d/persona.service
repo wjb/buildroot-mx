@@ -1,0 +1,14 @@
+[Unit]
+Description=Check for external USERDATA
+DefaultDependencies=false
+Before=basic.target
+After=sysinit.target
+
+[Service]
+Type=oneshot
+ExecStart=/lib/amlinux/persona
+RemainAfterExit=yes
+StartLimitInterval=0
+
+[Install]
+WantedBy=basic.target

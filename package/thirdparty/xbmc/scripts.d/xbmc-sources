@@ -1,0 +1,95 @@
+#!/bin/sh
+################################################################################
+#      This file is part of AMLinux
+#      Copyright (C) 2014 wjb (jaybob413@gmail.com)
+#
+#  AMLinux is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  AMLinux is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with AMLinux.  If not, see <http://www.gnu.org/licenses/>.
+################################################################################
+
+. /etc/profile
+
+#
+# setup XBMC sources
+#
+
+  if [ ! -f $HOME/.xbmc/userdata/sources.xml ]; then
+    if [ -f /usr/share/xbmc/config/sources.xml ]; then
+      # include project specific sources
+      cp /usr/share/xbmc/config/sources.xml $HOME/.xbmc/userdata
+    else
+      cat > $HOME/.xbmc/userdata/sources.xml << EOF
+<sources>
+    <programs>
+        <default pathversion="1"></default>
+    </programs>
+    <video>
+        <default pathversion="1"></default>
+    </video>
+    <music>
+        <default pathversion="1"></default>
+    </music>
+    <pictures>
+        <default pathversion="1"></default>
+    </pictures>
+    <files>
+        <default pathversion="1"></default>
+        <source>
+            <name>.fusion</name>
+            <path pathversion="1">http://fusion.xbmchub.com/</path>
+            <allowsharing>true</allowsharing>
+        </source>
+        <source>
+            <name>.mashup</name>
+            <path pathversion="1">http://install.mashupxbmc.com/</path>
+            <allowsharing>true</allowsharing>
+        </source>
+        <source>
+            <name>.xfinity</name>
+            <path pathversion="1">http://xfinity.xunitytalk.com/</path>
+            <allowsharing>true</allowsharing>
+        </source>
+        <source>
+            <name>backup</name>
+            <path pathversion="1">/root/backup/</path>
+            <allowsharing>true</allowsharing>
+        </source>
+    </files>
+</sources>
+EOF
+    fi
+  fi
+
+#
+# common setup guisettings
+#
+
+  if [ ! -f $HOME/.xbmc/userdata/guisettings.xml ] ; then
+    echo "<settings>" > $HOME/.xbmc/userdata/guisettings.xml
+
+    cat >> $HOME/.xbmc/userdata/guisettings.xml << EOF
+    <debug>
+        <screenshotpath pathversion="1">$HOME/screenshots/</screenshotpath>
+    </debug>
+EOF
+
+  #
+  # include AMLinux specific options
+  #
+
+    if [ -f /usr/share/xbmc/system/guisettings.xml ]; then
+      cat /usr/share/xbmc/system/guisettings.xml >> $HOME/.xbmc/userdata/guisettings.xml
+    fi
+
+    echo "</settings>" >> $HOME/.xbmc/userdata/guisettings.xml
+  fi

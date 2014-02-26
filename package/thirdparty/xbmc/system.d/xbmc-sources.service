@@ -1,0 +1,13 @@
+[Unit]
+Description=XBMC sources Setup
+Before=xbmc.service
+After=settings-dirs.service local-fs-pre.service
+
+[Service]
+Type=oneshot
+Environment=HOME=/root
+ExecStart=/lib/amlinux/xbmc-sources
+RemainAfterExit=yes
+
+[Install]
+WantedBy=xbmc.service

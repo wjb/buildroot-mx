@@ -1,0 +1,19 @@
+[Unit]
+Description=XBMC Load and Run
+After=multi-user.target
+Requires=multi-user.target
+
+[Service]
+Environment=HOME=/root
+Environment=CACHE=/root
+EnvironmentFile=-/run/xbmc/xbmc.conf
+EnvironmentFile=-/run/amlinux/debug/xbmc.conf
+ExecStart=/bin/sh -c ". /etc/profile; exec /usr/lib/xbmc/xbmc.bin --standalone $XBMC_ARGS $XBMC_DEBUG"
+KillMode=process
+TimeoutStopSec=10
+Restart=always
+RestartSec=2
+StartLimitInterval=0
+
+[Install]
+WantedBy=xbmc.target

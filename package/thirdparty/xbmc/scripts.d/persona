@@ -1,0 +1,99 @@
+#!/bin/sh
+exec 1>/tmp/userdata.txt
+exec 2>>/tmp/userdata.txt
+
+SCRIPTNAME="persona"
+
+if [ -z "$1" ]; then
+  echo $SCRIPTNAME": Begin"
+  if [ -f /tmp/userdata/$SCRIPTNAME ]; then
+    echo $SCRIPTNAME": Found "$SCRIPTNAME" in /tmp/userdata"
+    cp /tmp/userdata/$SCRIPTNAME /tmp
+    /tmp/$SCRIPTNAME
+    echo $SCRIPTNAME": done"
+    PERSONA=1
+  fi
+  if [ -z $PERSONA ] ; then
+    echo $SCRIPTNAME": Finding USERDATA"
+    if [ -e /tmp/userdata/persona_enable_wait ] ; then
+      for i in $(seq 0 9)
+      do
+        if [ -e "/dev/disk/by-label/USERDATA" ] ; then
+          echo $SCRIPTNAME": USERDATA found"
+          break
+        else
+          echo $SCRIPTNAME": USERDATA not found. Sleeping 1 and trying again."
+          sleep 1
+        fi
+      done
+    fi
+    if [ ! -e "/dev/disk/by-label/USERDATA" ] ; then
+      echo $SCRIPTNAME": USERDATA not found"
+    else
+      ROOT_DISK=`grep root /proc/mounts | cut -d " " -f 1 | grep dev`
+      #Get block device of USERDATA
+      USERDATA_DISK="/dev/"`ls -l /dev/disk/by-label | grep 'USERDATA' | cut -d "/" -f 3`
+      echo $SCRIPTNAME": Checking if "$USERDATA_DISK" is mounted"
+      if grep -qs $USERDATA_DISK /proc/mounts ; then
+        echo $SCRIPTNAME": USERDATA found"
+        USERDATA_MNTPT=`grep $USERDATA_DISK /proc/mounts | cut -d " " -f 2 | grep 'media'`
+        echo $SCRIPTNAME": USERDATA mounted at "$USERDATA_MNTPT
+      else
+        echo $SCRIPTNAME": USERDATA not mounted. Attempting to mount"
+        mkdir -p /media/USERDATA
+        /bin/mount -o rw,sync,noatime $USERDATA_DISK /media/USERDATA
+        USERDATA_MNTPT=/media/USERDATA
+        #USERDATA_MNTPT=`grep $USERDATA_DISK /proc/mounts | cut -d " " -f 2 | grep '/media'`
+        echo $SCRIPTNAME": USERDATA mounted at "$USERDATA_MNTPT
+      fi
+      echo $SCRIPTNAME": Checking USERDATA for xbmc-data folder"
+      if [ -d $USERDATA_MNTPT/xbmc-data ] ; then
+        USERDATA_XBMC=1
+        echo $SCRIPTNAME": xbmc-data folder found"
+      else
+        USERDATA_XBMC=0
+        mkdir -p $USERDATA_MNTPT/xbmc-data
+        echo $SCRIPTNAME": xbmc-data folder not found. Folder created"
+      fi
+      if [ $USERDATA_XBMC -ne 1 ] ; then
+        if [ -f /usr/share/splash/copying.fb.lzo ] ; then
+          lzopcat /usr/share/splash/copying.fb.lzo > /dev/fb0
+        fi
+        echo $SCRIPTNAME": Copying local data to USERDATA"
+        echo $SCRIPTNAME": Mounting USERDATA async"
+        /bin/mount -o remount,rw,async $USERDATA_MNTPT
+        cd /root/; tar -cf - . | (cd $USERDATA_MNTPT/xbmc-data; tar -xf -)
+        if [ $? -ne 0 ] ; then
+          echo $SCRIPTNAME": Copying error"
+        else
+          echo $SCRIPTNAME": Data copied to USERDATA successfully"
+          USERDATA_XBMC=1
+          echo $SCRIPTNAME": Syncing data"
+          sync
+          echo $SCRIPTNAME": Remounting USERDATA sync for data integrity"
+          /bin/mount -o remount,rw,sync $USERDATA_MNTPT
+        fi
+      fi
+      if [ $USERDATA_XBMC -eq 1 ] ; then
+        echo $SCRIPTNAME": Creating root.local for local data"
+        mkdir -p /tmp/root.local
+        echo $SCRIPTNAME": Binding local data to root.local"
+	/bin/umount -l /root
+	/bin/mount $ROOT_DISK /tmp/root.local
+        echo $SCRIPTNAME": Binding USERDATA/xbmc-data to /tmp/userdata"
+        /bin/mount -o bind $USERDATA_MNTPT/xbmc-data /root
+        if [ ! -d "/tmp/root.local/.xbmc/temp" ] ; then
+          echo $SCRIPTNAME": Creating local xbmc temp folder"
+          mkdir -p /tmp/root.local/.xbmc/temp
+        fi
+        if [ ! -d "/root/.xbmc/temp" ] ; then
+          echo $SCRIPTNAME": Creating USERDATA xbmc temp folder"
+          mkdir -p /root/.xbmc/temp
+        fi
+        echo $SCRIPTNAME": Binding local xbmc temp to USERDATA temp"
+        /bin/mount -o bind /tmp/root.local/.xbmc/temp /root/.xbmc/temp
+      fi
+    fi
+    echo $SCRIPTNAME": Done"
+  fi
+fi

@@ -1,0 +1,13 @@
+[Unit]
+Description=Mount user volumes
+DefaultDependencies=false
+Before=local-fs-pre.target
+
+[Service]
+Type=oneshot
+ExecStart=/lib/amlinux/mount-volumes
+RemainAfterExit=yes
+StartLimitInterval=0
+
+[Install]
+WantedBy=local-fs-pre.target

@@ -1,0 +1,13 @@
+[Unit]
+Description=XBMC reboot script
+After=xbmc.service
+Before=reboot.service
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+ExecStart=-/bin/sh /lib/amlinux/xbmc-reboot
+RemainAfterExit=yes
+
+[Install]
+WantedBy=reboot.target

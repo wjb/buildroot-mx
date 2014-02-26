@@ -1,0 +1,16 @@
+[Unit]
+Description=Setup debug config
+DefaultDependencies=no
+After=local-fs.target
+Before=sysinit.target shutdown.target
+Conflicts=shutdown.target
+
+ConditionKernelCommandLine=|debugging
+ConditionPathExists=|/root/.cache/debug.amlinux
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c 'mkdir -p /run/amlinux/debug; cp /usr/share/debugconf/*.conf /run/amlinux/debug'
+
+[Install]
+WantedBy=sysinit.target

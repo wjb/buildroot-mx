@@ -1,0 +1,13 @@
+[Unit]
+Description=Mount USERDATA partition
+DefaultDependencies=false
+Before=sysinit.target
+
+[Service]
+Type=oneshot
+ExecStart=/lib/amlinux/sysfs-config
+RemainAfterExit=yes
+StartLimitInterval=0
+
+[Install]
+WantedBy=sysinit.target

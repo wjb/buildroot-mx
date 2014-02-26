@@ -1,0 +1,11 @@
+[Unit]
+Description=Load Mali/Ump modules
+
+[Service]
+Type=oneshot
+ExecStart=/lib/amlinux/mali-load restart
+RemainAfterExit=yes
+StartLimitInterval=0
+
+[Install]
+WantedBy=xbmc.service

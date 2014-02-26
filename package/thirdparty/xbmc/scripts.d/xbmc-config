@@ -1,0 +1,15 @@
+#!/bin/sh
+
+REMOTECONF=/etc/xbmc/remote.conf
+if [ -f /root/.xbmc/remote.conf ]; then
+  REMOTECONF=/root/.xbmc/remote.conf
+fi
+/usr/bin/amremote_config $REMOTECONF
+#fbset -g 1280 720 1280 1440 32
+
+cat > /run/xbmc/xbmc.conf << EOF
+LD_LIBRARY_PATH=/usr/lib:/usr/lib/mysql:/lib
+XBMC_HOME=/usr/share/xbmc
+GCONV_PATH=/usr/lib/gconv
+AML_DEBUG=yes
+EOF

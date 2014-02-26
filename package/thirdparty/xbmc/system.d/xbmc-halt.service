@@ -1,0 +1,13 @@
+[Unit]
+Description=XBMC halt script
+After=xbmc.service
+Before=halt.service
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+ExecStart=-/bin/sh /lib/amlinux/xbmc-halt
+RemainAfterExit=yes
+
+[Install]
+WantedBy=halt.target

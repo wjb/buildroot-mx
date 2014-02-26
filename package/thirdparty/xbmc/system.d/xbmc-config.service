@@ -1,0 +1,11 @@
+[Unit]
+Description=XBMC configfile writer
+Before=xbmc.service
+
+[Service]
+Type=oneshot
+ExecStart=/lib/amlinux/xbmc-config
+RemainAfterExit=yes
+
+[Install]
+WantedBy=xbmc.service

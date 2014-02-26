@@ -1,0 +1,13 @@
+#!/bin/sh
+
+DEVROOT="/dev/data"
+
+mount -t ext4 $DEVROOT /root
+
+if [ -e /root/xios ]; then
+  echo "Moving xbmc userdata from xios to root"
+  rm -rf /root/.xbmc
+  mv /root/xios/root/.xbmc /root/
+  rm -rf /root/xios
+  sync
+fi

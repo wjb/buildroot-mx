@@ -1,0 +1,33 @@
+#!/bin/sh
+
+get_root_target() {
+  target=/dev/data
+  uuid=`blkid /dev/data | sed -n -e 's/.*UUID=\"\(.*\)\" .*/\1/p'`
+}
+
+# hard reset
+if [ -f /root/.cache/reset_amlinux ] ; then
+  get_root_target
+  if [ ! -z $target ] ; then
+    echo "hard resetting..."
+    umount /root
+    mke2fs -t ext4 -m 0 $target 2>&1 >/dev/null
+    if [ ! -z $label ] ; then
+      tune2fs -U random -L $label $target
+    fi
+    if [ ! -z $uuid ] ; then
+      echo "tune2fs uuid"
+      tune2fs -U $uuid $target
+    fi
+    reboot
+  fi
+fi
+
+# soft reset
+if [ -f /root/.cache/reset_xbmc ] ; then
+  get_root_target
+  if [ ! -z $target ] ; then
+    echo "soft resetting..."
+    rm -rf /root/.??* 2>&1 >/dev/null
+  fi
+fi

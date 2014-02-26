@@ -105,4 +105,28 @@ ifneq ($(BR2_ENABLE_DEBUG),y)
 XBMC_POST_INSTALL_TARGET_HOOKS += XBMC_STRIP_BINARIES
 endif
 
+ifeq ($(BR2_INIT_SYSTEMD),y)
+define XBMC_SYSTEMD_INSTALL
+	$(call install_systemd_files)
+	$(call enable_service, mali-load.service)
+	$(call enable_service, mount-volumes.service)
+	$(call enable_service, persona.service)
+	$(call enable_service, start-splash.service)
+	$(call enable_service, xbmc-config.service)
+	$(call enable_service, xbmc-halt.service)
+	$(call enable_service, xbmc-poweroff.service)
+	$(call enable_service, xbmc-reboot.service)
+	$(call enable_service, xbmc.service)
+	$(call enable_service, xbmc-sources.service)
+	$(call enable_service, xbmc-waitonnetwork.service)
+	$(call enable_service, debugconfig.service)
+	$(call enable_service, settings-dirs.service)
+	$(call enable_service, sysfs-config.service)
+	$(call enable_service, backup-restore.service)
+	$(call enable_service, factory-reset.service)
+endef
+
+XBMC_POST_INSTALL_TARGET_HOOKS += XBMC_SYSTEMD_INSTALL
+endif
+
 $(eval $(call autotools-package))
