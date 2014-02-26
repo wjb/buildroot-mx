@@ -1,4 +1,0 @@
-config BR2_PACKAGE_TINYXML
-	bool "tinyxml"
-	help
-	  Tiny XML Parser.

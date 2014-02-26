@@ -1,6 +1,0 @@
-config BR2_PACKAGE_JOE
-	bool "joe"
-	help
-	  Joe's Own Editor.
-
-	  http://joe-editor.sourceforge.net

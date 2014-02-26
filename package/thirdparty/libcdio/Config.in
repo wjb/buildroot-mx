@@ -1,6 +1,0 @@
-config BR2_PACKAGE_LIBCDIO
-	bool "libcdio"
-	help
-	  The GNU Compact Disc Input and Control library.
-
-	  http://www.gnu.org/software/libcdio/
