@@ -161,4 +161,14 @@ ifeq ($(BR2_PACKAGE_AVAHI_DAEMON),y)
 AVAHI_POST_INSTALL_TARGET_HOOKS += AVAHI_INSTALL_DAEMON_INITSCRIPT
 endif
 
+ifeq ($(BR2_INIT_SYSTEMD),y)
+define AVAHI_SYSTEMD_INSTALL
+	$(call install_systemd_files)
+	$(call enable_service,avahi-defaults.service)
+	$(call enable_service,avahi-daemon.service)
+endef
+
+AVAHI_POST_INSTALL_TARGET_HOOKS += AVAHI_SYSTEMD_INSTALL
+endif
+
 $(eval $(autotools-package))
