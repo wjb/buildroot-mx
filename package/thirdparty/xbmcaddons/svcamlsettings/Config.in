@@ -1,0 +1,6 @@
+config BR2_PACKAGE_XBMC_ADDON_SVCAMLSETTINGS
+    bool "service.amlinux.settings"
+    depends on BR2_PACKAGE_XBMC
+    default n
+    help
+      AMLinux Settings Addon
