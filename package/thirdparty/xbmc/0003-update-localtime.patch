@@ -1,0 +1,27 @@
+From 7421d8a6518f038d90e6b61cbd0dfbcffd63cd6b Mon Sep 17 00:00:00 2001
+From: wjb <jaybob413@gmail.com>
+Date: Mon, 10 Feb 2014 09:10:23 -0500
+Subject: [PATCH 3/3] [amlinux] Call script to update /etc/localtime when XBMC
+ changes timezones
+
+---
+ xbmc/linux/LinuxTimezone.cpp |    3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/xbmc/linux/LinuxTimezone.cpp b/xbmc/linux/LinuxTimezone.cpp
+index f639791..c93fb7d 100644
+--- a/xbmc/linux/LinuxTimezone.cpp
++++ b/xbmc/linux/LinuxTimezone.cpp
+@@ -158,6 +158,9 @@ void CLinuxTimezone::OnSettingChanged(const CSetting *setting)
+   const std::string &settingId = setting->GetId();
+   if (settingId == "locale.timezone")
+   {
++    const std::string cmd = std::string("sh /lib/amlinux/tzdata-setup ") + ((CSettingString*)setting)->GetValue().c_str();
++    system(cmd.c_str());
++
+     SetTimezone(((CSettingString*)setting)->GetValue());
+ 
+     CDateTime::ResetTimezoneBias();
+-- 
+1.7.9.5
+
