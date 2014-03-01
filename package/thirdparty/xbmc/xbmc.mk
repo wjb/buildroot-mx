@@ -124,6 +124,7 @@ define XBMC_SYSTEMD_INSTALL
 	$(call enable_service, sysfs-config.service)
 	$(call enable_service, backup-restore.service)
 	$(call enable_service, factory-reset.service)
+	ln -sf xbmc.target $(TARGET_DIR)/lib/systemd/system/default.target
 endef
 
 XBMC_POST_INSTALL_TARGET_HOOKS += XBMC_SYSTEMD_INSTALL
