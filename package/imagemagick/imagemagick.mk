@@ -4,14 +4,13 @@
 #
 ################################################################################
 
-IMAGEMAGICK_MAJOR = 6.8.7
-IMAGEMAGICK_VERSION = $(IMAGEMAGICK_MAJOR)-5
+IMAGEMAGICK_VERSION = 6.8.8-4
 IMAGEMAGICK_SOURCE = ImageMagick-$(IMAGEMAGICK_VERSION).tar.xz
 # The official ImageMagick site only keeps the latest versions
 # available, which is annoying. Use an alternate site that keeps all
 # older versions.
 IMAGEMAGICK_SITE = ftp://ftp.nluug.nl/pub/ImageMagick/
-IMAGEMAGICK_LICENSE = Apache-v2
+IMAGEMAGICK_LICENSE = Apache-2.0
 IMAGEMAGICK_LICENSE_FILES = LICENSE
 
 IMAGEMAGICK_INSTALL_STAGING = YES
@@ -116,7 +115,7 @@ ifeq ($(BR2_PACKAGE_BZIP2),y)
 IMAGEMAGICK_CONF_OPT += --with-bzlib
 IMAGEMAGICK_DEPENDENCIES += bzip2
 else
-IMAGEMAGICK_CONF_OPT += --without-bzip2
+IMAGEMAGICK_CONF_OPT += --without-bzlib
 endif
 
 $(eval $(autotools-package))
