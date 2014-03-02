@@ -4,54 +4,49 @@ define enable_service
 endef
 
 define install_systemd_files
-#	echo "BUILD_DIR: $(BUILD_DIR)"
-#	echo "TARGET_DIR: $(TARGET_DIR)"
-#	echo "PKG: $(PKG)";
-#	echo "PKG_VERSION: $($(PKG)_VERSION)"
-#	echo "PKG_DIR_PREFIX: $($(PKG)_DIR_PREFIX)"
-#	echo "PKG_RAWNAME: $($(PKG)_RAWNAME)"
-	if test -d $($(PKG)_DIR_PREFIX)$($(PKG)_RAWNAME)/profile.d; then \
+#	echo "PKGDIR = $(TOPDIR)/$($(PKG)_PKGDIR)"
+	if test -d $(TOPDIR)/$($(PKG)_PKGDIR)/profile.d; then \
 		mkdir -p $(TARGET_DIR)/etc/profile.d; \
-		cp $($(PKG)_DIR_PREFIX)$($(PKG)_RAWNAME)/profile.d/*.conf $(TARGET_DIR)/etc/profile.d/; \
+		cp $(TOPDIR)/$($(PKG)_PKGDIR)/profile.d/*.conf $(TARGET_DIR)/etc/profile.d/; \
 	fi;
 
-	if test -d $($(PKG)_DIR_PREFIX)$($(PKG)_RAWNAME)/tmpfiles.d; then \
+	if test -d $(TOPDIR)/$($(PKG)_PKGDIR)/tmpfiles.d; then \
 		mkdir -p $(TARGET_DIR)/usr/lib/tmpfiles.d; \
-		cp $($(PKG)_DIR_PREFIX)$($(PKG)_RAWNAME)/tmpfiles.d/*.conf $(TARGET_DIR)/usr/lib/tmpfiles.d/; \
+		cp $(TOPDIR)/$($(PKG)_PKGDIR)/tmpfiles.d/*.conf $(TARGET_DIR)/usr/lib/tmpfiles.d/; \
 	fi;
 
-	if test -d $($(PKG)_DIR_PREFIX)$($(PKG)_RAWNAME)/system.d; then \
+	if test -d $(TOPDIR)/$($(PKG)_PKGDIR)/system.d; then \
 		mkdir -p $(TARGET_DIR)/lib/systemd/system; \
-		cp $($(PKG)_DIR_PREFIX)$($(PKG)_RAWNAME)/system.d/*.* $(TARGET_DIR)/lib/systemd/system/; \
+		cp $(TOPDIR)/$($(PKG)_PKGDIR)/system.d/*.* $(TARGET_DIR)/lib/systemd/system/; \
 	fi;
 
-	if test -d $($(PKG)_DIR_PREFIX)$($(PKG)_RAWNAME)/udev.d; then \
+	if test -d $(TOPDIR)/$($(PKG)_PKGDIR)/udev.d; then \
 		mkdir -p $(TARGET_DIR)/lib/udev/rules.d; \
-		cp $($(PKG)_DIR_PREFIX)$($(PKG)_RAWNAME)/udev.d/*.rules $(TARGET_DIR)/lib/udev/rules.d/; \
+		cp $(TOPDIR)/$($(PKG)_PKGDIR)/udev.d/*.rules $(TARGET_DIR)/lib/udev/rules.d/; \
 	fi;
 
-	if test -d $($(PKG)_DIR_PREFIX)$($(PKG)_RAWNAME)/sysctl.d; then \
+	if test -d $(TOPDIR)/$($(PKG)_PKGDIR)/sysctl.d; then \
 		mkdir -p $(TARGET_DIR)/usr/lib/sysctl.d; \
-		cp $($(PKG)_DIR_PREFIX)$($(PKG)_RAWNAME)/sysctl.d/*.conf $(TARGET_DIR)/usr/lib/sysctl.d/; \
+		cp $(TOPDIR)/$($(PKG)_PKGDIR)/sysctl.d/*.conf $(TARGET_DIR)/usr/lib/sysctl.d/; \
 	fi;
 
-	if test -d $($(PKG)_DIR_PREFIX)$($(PKG)_RAWNAME)/modules-load.d; then \
+	if test -d $(TOPDIR)/$($(PKG)_PKGDIR)/modules-load.d; then \
 		mkdir -p $(TARGET_DIR)/usr/lib/modules-load.d; \
-		cp $($(PKG)_DIR_PREFIX)$($(PKG)_RAWNAME)/modules-load.d/*.conf $(TARGET_DIR)/usr/lib/modules-load.d/; \
+		cp $(TOPDIR)/$($(PKG)_PKGDIR)/modules-load.d/*.conf $(TARGET_DIR)/usr/lib/modules-load.d/; \
 	fi;
 
-	if test -d $($(PKG)_DIR_PREFIX)$($(PKG)_RAWNAME)/sysconf.d; then \
+	if test -d $(TOPDIR)/$($(PKG)_PKGDIR)/sysconf.d; then \
 		mkdir -p $(TARGET_DIR)/etc/sysconf.d; \
-		cp $($(PKG)_DIR_PREFIX)$($(PKG)_RAWNAME)/sysconf.d/*.conf $(TARGET_DIR)/etc/sysconf.d/; \
+		cp $(TOPDIR)/$($(PKG)_PKGDIR)/sysconf.d/*.conf $(TARGET_DIR)/etc/sysconf.d/; \
 	fi;
 
-	if test -d $($(PKG)_DIR_PREFIX)$($(PKG)_RAWNAME)/debug.d; then \
+	if test -d $(TOPDIR)/$($(PKG)_PKGDIR)/debug.d; then \
 		mkdir -p $(TARGET_DIR)/usr/share/debugconf; \
-		cp $($(PKG)_DIR_PREFIX)$($(PKG)_RAWNAME)/debug.d/*.conf $(TARGET_DIR)/usr/share/debugconf/; \
+		cp $(TOPDIR)/$($(PKG)_PKGDIR)/debug.d/*.conf $(TARGET_DIR)/usr/share/debugconf/; \
 	fi;
 
-	if test -d $($(PKG)_DIR_PREFIX)$($(PKG)_RAWNAME)/scripts.d; then \
+	if test -d $(TOPDIR)/$($(PKG)_PKGDIR)/scripts.d; then \
 		mkdir -p $(TARGET_DIR)/lib/amlinux; \
-		cp $($(PKG)_DIR_PREFIX)$($(PKG)_RAWNAME)/scripts.d/* $(TARGET_DIR)/lib/amlinux/; \
+		cp $(TOPDIR)/$($(PKG)_PKGDIR)/scripts.d/* $(TARGET_DIR)/lib/amlinux/; \
 	fi;
 endef
