@@ -23,10 +23,10 @@ XBMC_DEPENDENCIES += libogg flac libmad libmpeg2 libogg \
   libsamplerate libtheora libvorbis wavpack bzip2 dbus libcdio \
   python lzo zlib libgcrypt openssl mysql sqlite fontconfig \
   freetype jasper jpeg libmodplug libpng libungif tiff libcurl \
-  libmicrohttpd libssh2 boost fribidi ncurses pcre libnfs afpfs-ng \
+  libmicrohttpd libssh2 boost libfribidi ncurses pcre libnfs afpfs-ng \
   libplist libshairport libbluray libcec \
   readline expat libxml2 yajl samba libass opengl libusb-compat \
-  avahi udev tinyxml taglib18 libssh
+  avahi udev tinyxml taglib libssh
 
 ifeq ($(BR2_PACKAGE_LIBAMPLAYERM1),y)
 XBMC_DEPENDENCIES += libamplayerm1
