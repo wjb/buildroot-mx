@@ -1,0 +1,14 @@
+[Unit]
+Description=OpenSSH server daemon
+ConditionKernelCommandLine=|ssh
+ConditionPathExists=|/root/.cache/services/sshd.conf
+After=syslog.target network.target
+
+[Service]
+EnvironmentFile=-/root/.cache/services/sshd.conf
+ExecStart=/usr/sbin/sshd -D $SSH_ARGS
+ExecReload=/bin/kill -HUP $MAINPID
+TimeoutStopSec=1s
+
+[Install]
+WantedBy=multi-user.target

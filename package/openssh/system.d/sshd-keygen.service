@@ -1,0 +1,12 @@
+[Unit]
+Description=Setup sshd keys
+Before=sshd.service
+
+[Service]
+Type=oneshot
+ExecStart=/lib/amlinux/sshd-keygen
+RemainAfterExit=yes
+StartLimitInterval=0
+
+[Install]
+WantedBy=sshd.service

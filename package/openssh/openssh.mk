@@ -18,11 +18,11 @@ OPENSSH_CONF_OPT += --with-pam
 endif
 
 define OPENSSH_INSTALL_INIT_SYSTEMD
-	$(INSTALL) -D -m 644 package/openssh/sshd.service \
-		$(TARGET_DIR)/etc/systemd/system/sshd.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -fs ../sshd.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/sshd.service
+	$(call install_systemd_files)
+	$(call enable_service, sshd.service)
+	$(call enable_service, sshd-keygen.service)
+	cp $(OPENSSH_PKGDIR)/config/ssh_config	$(TARGET_DIR)/etc/
+	cp $(OPENSSH_PKGDIR)/config/sshd_config	$(TARGET_DIR)/etc/
 endef
 
 define OPENSSH_INSTALL_INIT_SYSV
