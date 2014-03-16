@@ -19,13 +19,13 @@
 
 . /etc/profile
 
-RSA1_KEY="/root/.cache/ssh/ssh_host_key"
-RSA2_KEY="/root/.cache/ssh/ssh_host_rsa_key"
-DSA2_KEY="/root/.cache/ssh/ssh_host_dsa_key"
+RSA1_KEY="/etc/ssh/ssh_host_key"
+RSA2_KEY="/etc/ssh/ssh_host_rsa_key"
+DSA2_KEY="/etc/ssh/ssh_host_dsa_key"
 
 KEYGEN="/usr/bin/ssh-keygen"
 
-mkdir -p /root/.cache/ssh
+mkdir -p /etc/ssh
 
 # Check for the SSH1 RSA key
   if [ ! -s $RSA1_KEY ] ; then
