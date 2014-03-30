@@ -4,17 +4,18 @@
 #
 ################################################################################
 
-DBUS_VERSION = 1.6.18
+DBUS_VERSION = 1.8.0
 DBUS_SITE = http://dbus.freedesktop.org/releases/dbus
 DBUS_LICENSE = AFLv2.1 GPLv2+
 DBUS_LICENSE_FILES = COPYING
 DBUS_INSTALL_STAGING = YES
+DBUS_AUTORECONF = YES
 
 define DBUS_PERMISSIONS
 /usr/libexec/dbus-daemon-launch-helper f 4755 0 0 - - - - -
 endef
 
-DBUS_DEPENDENCIES = host-pkgconf
+DBUS_DEPENDENCIES = host-pkgconf systemd
 
 DBUS_CONF_ENV = ac_cv_have_abstract_sockets=yes
 DBUS_CONF_OPT = --with-dbus-user=dbus \
@@ -25,7 +26,10 @@ DBUS_CONF_OPT = --with-dbus-user=dbus \
 		--disable-xml-docs \
 		--disable-doxygen-docs \
 		--disable-static \
-		--disable-dnotify \
+		--disable-x11-autolaunch \
+		--enable-systemd \
+		--enable-inotify \
+		--enable-dnotify \
 		--localstatedir=/var \
 		--with-system-socket=/var/run/dbus/system_bus_socket \
 		--with-system-pid-file=/var/run/messagebus.pid
