@@ -12,7 +12,7 @@ Index: systemd-206/units/getty@.service.m4
 
  [Service]
  # the VT is cleared by TTYVTDisallocate
--ExecStart=-/sbin/agetty --noclear %I
+-ExecStart=-/sbin/agetty --noclear %I $TERM
 +ExecStart=-/sbin/getty -L %I 115200 vt100
  Type=idle
  Restart=always
@@ -25,7 +25,7 @@ Index: systemd-206/units/serial-getty@.service.m4
  IgnoreOnIsolate=yes
 
  [Service]
--ExecStart=-/sbin/agetty --keep-baud %I 115200,38400,9600
+-ExecStart=-/sbin/agetty --keep-baud %I 115200,38400,9600 $TERM
 +ExecStart=-/sbin/getty -L %I 115200 vt100
  Type=idle
  Restart=always

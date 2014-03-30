@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SYSTEMD_VERSION = 208
+SYSTEMD_VERSION = 211
 SYSTEMD_SITE = http://www.freedesktop.org/software/systemd/
 SYSTEMD_SOURCE = systemd-$(SYSTEMD_VERSION).tar.xz
 SYSTEMD_LICENSE = GPLv2+
@@ -12,6 +12,7 @@ SYSTEMD_LICENSE_FILES = LICENSE.GPLV2 LICENSE.LGPL2.1 LICENSE.MIT
 SYSTEMD_INSTALL_STAGING = YES
 SYSTEMD_DEPENDENCIES = \
 	host-intltool \
+	host-coreutils \
 	libcap \
 	dbus \
 	util-linux \
@@ -39,6 +40,8 @@ SYSTEMD_CONF_OPT += \
 	--with-firmware-path=/lib/firmware \
 	--enable-split-usr \
 	--enable-introspection=no \
+	--disable-multi-seat-x \
+	--disable-networkd \
 	--disable-efi \
 	--disable-myhostname \
 	--disable-tcpwrap \
