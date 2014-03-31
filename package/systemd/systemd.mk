@@ -14,7 +14,6 @@ SYSTEMD_DEPENDENCIES = \
 	host-intltool \
 	host-coreutils \
 	libcap \
-	dbus \
 	util-linux \
 	kmod
 
