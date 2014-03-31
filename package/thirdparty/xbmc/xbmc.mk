@@ -4,9 +4,8 @@
 #
 #################################################################################
 
-XBMC_VERSION = 4910748f03ff9061f0a84caa4e10d334050d62f9
-XBMC_SITE_METHOD = git
-XBMC_SITE = git://github.com/xbmc/xbmc.git
+XBMC_VERSION = 2dcc855
+XBMC_SITE = $(call github,xbmc,xbmc,$(XBMC_VERSION))
 XBMC_INSTALL_STAGING = YES
 XBMC_INSTALL_TARGET = YES
 
