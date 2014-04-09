@@ -4,7 +4,7 @@
 #
 #################################################################################
 
-XBMC_VERSION = 2dcc855
+XBMC_VERSION = 492e29a2
 XBMC_SITE = $(call github,xbmc,xbmc,$(XBMC_VERSION))
 XBMC_INSTALL_STAGING = YES
 XBMC_INSTALL_TARGET = YES
