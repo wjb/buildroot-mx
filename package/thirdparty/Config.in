@@ -1,5 +1,4 @@
 menu "XBMC and its Dependencies"
-source "package/thirdparty/libshairport/Config.in"
 source "package/thirdparty/libssh/Config.in"
 source "package/thirdparty/lirc/Config.in"
 source "package/thirdparty/afpfs-ng/Config.in"

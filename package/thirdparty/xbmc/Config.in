@@ -62,7 +62,6 @@ config BR2_PACKAGE_XBMC
 	select BR2_PACKAGE_AFPFS_NG
 	select BR2_PACKAGE_LIBBLURAY
 	select BR2_PACKAGE_LIBPLIST
-	select BR2_PACKAGE_LIBSHAIRPORT
 	select BR2_PACKAGE_AVAHI
 	select BR2_PACKAGE_AVAHI_DAEMON
 	select BR2_PACKAGE_NCURSES_TARGET_PANEL
@@ -89,4 +88,11 @@ config BR2_XBMC_REMOTE_CONF
 	default ""
 	help
 	  File to copy to remote.conf in /etc/xbmc directory.
+
+config BR2_PACKAGE_XBMC_LIBSHAIRPLAY
+	bool "shairplay"
+	select BR2_PACKAGE_LIBSHAIRPLAY
+	help
+	  Enable Shairport support.
+	  Select this if you want to stream content from an Apple device.
 
