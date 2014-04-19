@@ -1,0 +1,51 @@
+From 82f64adbb851015e30c30a8eb6b710880d263bd2 Mon Sep 17 00:00:00 2001
+From: Brandon McAnsh <brandonm@matricom.net>
+Date: Fri, 18 Apr 2014 12:41:54 -0400
+Subject: [PATCH 3/4] DVDFactoryCodec: Further conditionalize HAS_LIBAMCODEC
+ opening
+
+Signed-off-by: Brandon McAnsh <brandonm@matricom.net>
+---
+ xbmc/cores/dvdplayer/DVDCodecs/DVDFactoryCodec.cpp |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
+
+diff --git a/xbmc/cores/dvdplayer/DVDCodecs/DVDFactoryCodec.cpp b/xbmc/cores/dvdplayer/DVDCodecs/DVDFactoryCodec.cpp
+index 9e7ea0c..912dc20 100644
+--- a/xbmc/cores/dvdplayer/DVDCodecs/DVDFactoryCodec.cpp
++++ b/xbmc/cores/dvdplayer/DVDCodecs/DVDFactoryCodec.cpp
+@@ -194,17 +194,29 @@ CDVDVideoCodec* CDVDFactoryCodec::CreateVideoCodec(CDVDStreamInfo &hint, unsigne
+ 
+   CLog::Log(LOGDEBUG, "CDVDFactoryCodec: compiled in hardware support: %s", hwSupport.c_str());
+ 
+-  if(hint.stills && (hint.codec == AV_CODEC_ID_MPEG2VIDEO || hint.codec == AV_CODEC_ID_MPEG1VIDEO))
++  if (hint.stills && (hint.codec == AV_CODEC_ID_MPEG2VIDEO || hint.codec == AV_CODEC_ID_MPEG1VIDEO))
+   {
+      // If dvd is an mpeg2 and hint.stills
+-     if( (pCodec = OpenCodec(new CDVDVideoCodecLibMpeg2(), hint, options)) ) return pCodec;
++     if ( (pCodec = OpenCodec(new CDVDVideoCodecLibMpeg2(), hint, options)) ) return pCodec;
+   }
+ 
+ #if defined(HAS_LIBAMCODEC)
+   // amcodec can handle dvd playback.
+   if (!hint.software && CSettings::Get().GetBool("videoplayer.useamcodec"))
+   {
+-     if ( (pCodec = OpenCodec(new CDVDVideoCodecAmlogic(), hint, options)) ) return pCodec;
++    switch (hint.codec)
++    {
++      case AV_CODEC_ID_MPEG2VIDEO:
++      case AV_CODEC_ID_MPEG1VIDEO:
++        if (!hint.stills && hint.height >= 720)
++        {
++          if ( (pCodec = OpenCodec(new CDVDVideoCodecAmlogic(), hint, options)) ) return pCodec;
++        }
++        break;
++      default:
++        if ( (pCodec = OpenCodec(new CDVDVideoCodecAmlogic(), hint, options)) ) return pCodec;
++        break;
++    }
+   }
+ #endif
+ 
+-- 
+1.7.9.5
+
