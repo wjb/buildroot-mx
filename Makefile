@@ -51,6 +51,9 @@ TOPDIR:=$(shell pwd)
 CONFIG_CONFIG_IN=Config.in
 CONFIG=support/kconfig
 DATE:=$(shell date +%Y%m%d)
+BLDDATE:=$(shell date -u +%0d%^b%Y)
+GITVER:=$(shell git log --pretty=format:\"%h\" | head -1)
+XBMCVER:=$(shell grep XBMC_VERSION $(TOPDIR)/package/thirdparty/xbmc/xbmc.mk | head -1)
 
 # Compute the full local version string so packages can use it as-is
 # Need to export it, so it can be got from environment in children (eg. mconf)
@@ -556,6 +559,15 @@ endif
 		echo "VERSION_ID=$(BR2_VERSION)"; \
 		echo "PRETTY_NAME=\"Buildroot $(BR2_VERSION)\"" \
 	) >  $(TARGET_DIR)/etc/os-release
+	( \
+		echo "Target Arch: $(BR2_GCC_TARGET_ARCH)  Target CPU: $(BR2_GCC_TARGET_CPU)" \
+	) > $(TARGET_DIR)/etc/arch
+	( \
+		echo "$(XBMCVER) [Gotham]" \
+	) > $(TARGET_DIR)/etc/build
+	( \
+		echo "Buildroot Version: $(GITVER)  Built: $(BLDDATE)" \
+	) > $(TARGET_DIR)/etc/version
 
 	@$(foreach d, $(call qstrip,$(BR2_ROOTFS_OVERLAY)), \
 		$(call MESSAGE,"Copying overlay $(d)"); \
