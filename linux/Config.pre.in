@@ -16,4 +16,7 @@ config BR2_PREBUILT_LINUX_MODS
 config BR2_PREBUILT_LINUX_IMAGE
 	string "Name of pre-built Linux image"
 
+config BR2_PREBUILT_LINUX_DTB
+	string "Name of pre-built device tree blob"
+
 endif
