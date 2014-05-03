@@ -187,6 +187,24 @@ ROOTFS_RECOVERY_AML_CMD += \
     cp -f $(AML_LOGO) $(BINARIES_DIR)/aml_recovery/logo.img &&
 endif
 
+ifeq ($(BR2_TARGET_ROOTFS_CPIO_GZIP),y)
+    ROOTFS_CPIO = rootfs.cpio.gz
+else
+    ROOTFS_CPIO = rootfs.cpio
+endif
+
+ifeq ($(BR2_LINUX_KERNEL_USE_INTREE_DTS),y)
+KERNEL_DTS_NAME = $(call qstrip,$(BR2_LINUX_KERNEL_INTREE_DTS_NAME))
+else ifeq ($(BR2_LINUX_KERNEL_USE_CUSTOM_DTS),y)
+KERNEL_DTS_NAME = $(basename $(notdir $(call qstrip,$(BR2_LINUX_KERNEL_CUSTOM_DTS_PATH))))
+else ifneq ($(strip $(BR2_PREBUILT_LINUX_DTB)),"")
+KERNEL_DTS_NAME = $(basename $(notdir $(call qstrip,$(BR2_PREBUILT_LINUX_DTB))))
+endif
+
+KERNEL_DTBS = $(addsuffix .dtb,$(KERNEL_DTS_NAME))
+
+MKBOOTIMG = fs/recovery_aml/mkbootimg
+
 ifneq ($(strip $(BR2_TARGET_ROOTFS_RECOVERY_AML_APPEND_INITRD)),"")
 
 ROOTFS_RECOVERY_AML_CMD += \
@@ -194,10 +212,37 @@ ROOTFS_RECOVERY_AML_CMD += \
     pushd $(BR2_TARGET_ROOTFS_RECOVERY_AML_APPEND_INITRD)/ >/dev/null && \
     find . | cpio -o --format=newc | gzip > $(BINARIES_DIR)/aml_recovery/ramdisk-new.gz && \
     popd >/dev/null && \
-    fs/recovery_aml/mkbootimg --kernel $(BINARIES_DIR)/uImage --ramdisk $(BINARIES_DIR)/aml_recovery/ramdisk-new.gz -o $(BINARIES_DIR)/aml_recovery/uImage && \
+    $(MKBOOTIMG) --kernel $(BINARIES_DIR)/uImage --ramdisk $(BINARIES_DIR)/aml_recovery/ramdisk-new.gz -o $(BINARIES_DIR)/aml_recovery/uImage && \
     cp -f $(BINARIES_DIR)/aml_recovery/uImage $(BINARIES_DIR)/kernel &&  
-else
 
+else ifneq ($(strip $(BR2_TARGET_ROOTFS_INITRAMFS_LIST)),"")
+#ifeq ($(BR2_LINUX_KERNEL_DTS_SUPPORT),y)
+ifneq ($(wildcard $(KERNEL_DTBS)),"")
+# ramdisk and device tree
+ROOTFS_RECOVERY_AML_CMD += \
+    echo "Creating boot image with ROOTFS_CPIO ramdisk and device tree blob" && \
+    $(MKBOOTIMG) --kernel $(BINARIES_DIR)/uImage --ramdisk $(BINARIES_DIR)/$(ROOTFS_CPIO) --second $(BINARIES_DIR)/$(KERNEL_DTBS) -o $(BINARIES_DIR)/aml_recovery/uImage && \
+    cp -f $(BINARIES_DIR)/aml_recovery/uImage $(BINARIES_DIR)/kernel &&
+
+
+else
+# ramdisk only
+ROOTFS_RECOVERY_AML_CMD += \
+    echo "Creating boot image with ROOTFS_CPIO ramdisk" && \
+    $(MKBOOTIMG) --kernel $(BINARIES_DIR)/uImage --ramdisk $(BINARIES_DIR)/$(ROOTFS_CPIO) -o $(BINARIES_DIR)/aml_recovery/uImage && \
+    cp -f $(BINARIES_DIR)/aml_recovery/uImage $(BINARIES_DIR)/kernel &&
+
+endif
+#else ifeq ($(BR2_LINUX_KERNEL_DTS_SUPPORT),y)
+else ifneq ($(wildcard $(KERNEL_DTBS)),"")
+# device tree only
+ROOTFS_RECOVERY_AML_CMD += \
+    echo "Creating boot image with device tree blob" && \
+    $(MKBOOTIMG) --kernel $(BINARIES_DIR)/uImage --second $(BINARIES_DIR)/$(KERNEL_DTBS) -o $(BINARIES_DIR)/aml_recovery/uImage && \
+    cp -f $(BINARIES_DIR)/aml_recovery/uImage $(BINARIES_DIR)/kernel &&
+
+else
+# neither ramdisk nor device tree
 ROOTFS_RECOVERY_AML_CMD += \
     cp -f $(BINARIES_DIR)/uImage $(BINARIES_DIR)/aml_recovery/ &&
 
